@@ -1,7 +1,8 @@
 from django.core import paginator
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
-from .models import Post, Category
+from .models import Post, Category, Comment
+from .forms import CommentForm
 
 # Create your views here.
 def blog(request):
@@ -24,4 +25,18 @@ def category(request, category_id):
 
 def post(request, post_id):
     post = get_object_or_404(Post, id = post_id)
-    return render(request, "blog/post.html", {'posts':post})
+    comments = post.comments.filter(active=True)
+    new_comment = None
+
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.post = post
+            new_comment.save()
+    else:
+        comment_form = CommentForm()
+    return render(request, "blog/post.html", {'post':post,
+                                            'comments':comments,
+                                            'new_comment':new_comment,
+                                            'comment_form':comment_form})

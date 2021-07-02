@@ -20,5 +20,4 @@ urlpatterns = [
     path('', views.blog, name="blog"),
     path('category/<int:category_id>/', views.category, name="category"),
     path('post/<int:post_id>/', views.post, name="post"),
-    path('post/<int:post_id>/comment/', views.add_comment_to_post, name='add_comment_to_post'),
 ]

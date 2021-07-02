@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_comments_xtd',
     'django_comments',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
