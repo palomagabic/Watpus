@@ -1,0 +1,74 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Todos los cursos{% endblock %}
+{% block content %}
+
+			<!-- Main -->
+				<section id="main">
+					<div class="container">
+						<div>
+							<header class="major">
+								<h2>Cursos Disponibles</h2>
+							</header>
+                            <div class="row">
+                               {% for curse in curses %}
+                                    <div class="row row-cols-1 row-cols-md-3 g-6">
+                                        <div class="card border-secondary mb-3" style="max-width: 18rem;">
+                                            <p class="mb-0-mbt">
+                                                <span class="section-heading-under">
+                                                  <em>
+                                                    {% for category in post.categories.all %}
+                                                      <a href="{% url 'category' category.id %}" class="link">
+                                                        {{category.name}}
+                                                      </a>{% if not forloop.last %},{% endif %}
+                                                    {% endfor %}
+                                                  </em>
+                                                </span>
+                                            </p>
+                                            <a href="#" class="image featured"><img src="{{ curse.image.url }}" alt="" /></a>
+                                            <header>
+                                                <h3>{{ curse.title}}</h3>
+                                            </header>
+                                            <p>{{ curse.description }}</p>
+                                            <footer>
+                                                <ul class="actions">
+                                                    <li><a href="{% url 'curse_detail' curse.id %}" class="button alt">Quiero saber mas</a></li>
+                                                </ul>
+                                            </footer>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                                {% if  curses.has_other_pages %}
+
+                                    <div class="row justify-content-center text-secondary mt-4 mb-4">
+                                      <nav>
+                                        <ul class="pagination">
+                                          {% if curses.has_previous %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ curses.previous_page_number }}">&laquo;</a</li>
+                                          {% endif %}
+
+                                          {% for i in curses.paginator.page_range %}
+                                            {% if curses.number == i %}
+                                              <li class="page-item active"><span class="page-link" href="?page={{i}}">{{i}}<span class="sr-only">(current)</span></span></li>
+                                            {% else %}
+                                              <li class="page-item"><a class="page-link" href="?page={{i}}">{{i}}</a></li>
+                                            {% endif %}
+                                          {% endfor %}
+
+                                          {% if curses.has_next %}
+                                            <li class="page-item"><a class="page-link" href="?page={{ curses.next_page_number }}">&raquo;</a></li>
+                                          {% endif %}
+                                        </ul>
+                                      </nav>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+						</section>
+
+					</div>
+				</section>
+
+{% endblock %}
